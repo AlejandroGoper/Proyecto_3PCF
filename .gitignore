@@ -8,6 +8,8 @@
 *.png
 *.log
 *.dat
+*.xls
+*.ods
 
 # Ignorando la carpeta del repositorio 3PCFGPU 
 /Simulaciones_de_cajas/DESI
