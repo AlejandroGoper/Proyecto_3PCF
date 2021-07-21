@@ -1,0 +1,25 @@
+# =============================================
+#      Ignorando archivos innecesarios
+# =============================================
+
+*.txt
+*.zip
+*.jpeg
+*.png
+*.log
+*.dat
+
+# Ignorando la carpeta del repositorio 3PCFGPU 
+/Simulaciones_de_cajas/DESI
+
+# Codigo de fuerza bruta de la 3PCFGPU
+/cutest/
+
+# Carpeta de documentos
+/Docs/
+
+# Ignorando la carpeta donde almaceno los archivos data y rand para correr la 3PCFGPU
+/Simulaciones_de_cajas/data
+/Simulaciones_de_cajas/random
+
+
