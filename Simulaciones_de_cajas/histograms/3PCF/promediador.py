@@ -25,6 +25,7 @@ nombre_archivo = "DDD/DDDiso_data_512MPc_0.dat"
 
 tensor = np.genfromtxt(nombre_archivo)
 tensor_reshaped = tensor.reshape(30,30,30)
+one = np.ones((30,30,30))
 
 #ddd,e_ddd = get_histogram("DDD", "512MPc", 15)
 #ddr,e_ddr = get_histogram("DDR", "512MPc", 15)
