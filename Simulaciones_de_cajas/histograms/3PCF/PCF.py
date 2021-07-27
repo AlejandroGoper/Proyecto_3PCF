@@ -26,7 +26,7 @@ class PCF:
     """
     def estimar_3PCF(self):
         #Creamos un arreglo de unos de las mismas dimensiones que los histogramas
-        one = ones(len(self.DDD))
+        one = ones((30,30,30))
         #Construimos el estimador
         est = self.DDD/self.RRR -3*self.DDR/self.RRR +3*self.DRR/self.RRR - one
         return est
@@ -36,7 +36,7 @@ class PCF:
         
         Se toma como x -> DDD ; y -> DDR ; z -> DRR ; t -> RRR
     """
-    def error_estimador(self, e_DDD, e_DDR, e_DRR, e_RRR):
+    def error_estimador_ss(self, e_DDD, e_DDR, e_DRR, e_RRR):
         error2 = (self.partial_x()*e_DDD)**2 + (self.partial_y()*e_DDR)**2 + (self.partial_z()*e_DRR)**2 + (self.partial_t()*e_RRR)**2
         error = sqrt(error2)
         return error
@@ -47,7 +47,7 @@ class PCF:
     """
     
     def partial_x(self):
-        return ones(len(self.DDD))/self.RRR        # 1/t
+        return ones((30,30,30))/self.RRR        # 1/t
     
     def partial_y(self):
         return -3*self.partial_x()              # -3/t 
@@ -76,7 +76,10 @@ def get_histogram(name,box,n_files):
         archivo_prefijo = name+"iso_rand0_" + box + "_"
 
     for i in range(n_files):
-        x = genfromtxt(carpeta+archivo_prefijo+str(i)+".dat")
+        # En este caso el archivo original esta guardado en 2D con dimensiones 900 x 30 
+        x_2d = genfromtxt(carpeta+archivo_prefijo+str(i)+".dat")
+        # Cambiamos de nuevo a histograma 3D
+        x = x_2d.reshaped(30,30,30)
         tensor.append(x)
     # Promediamos todas las realizaciones
     x = mean(tensor,axis=0)
