@@ -16,21 +16,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PCF import PCF,get_histogram
 
+# Pruebas del promediado de las realizaciones
 
-# Pruebas para abrir los histogramas 
-
-
-
-nombre_archivo = "DDD/DDDiso_data_512MPc_0.dat"
-
-tensor = np.genfromtxt(nombre_archivo)
-tensor_reshaped = tensor.reshape(30,30,30)
-one = np.ones((30,30,30))
-
-#ddd,e_ddd = get_histogram("DDD", "512MPc", 15)
-#ddr,e_ddr = get_histogram("DDR", "512MPc", 15)
-#drr,e_drr = get_histogram("DRR", "512MPc", 15)
-#rrr,e_rrr = get_histogram("RRR", "512MPc", 15)
+ddd,e_ddd = get_histogram("DDD", "512MPc", 15)
+ddr,e_ddr = get_histogram("DDR", "512MPc", 15)
+drr,e_drr = get_histogram("DRR", "512MPc", 15)
+rrr,e_rrr = get_histogram("RRR", "512MPc", 15)
 
 #bins = np.arange(30)
 #3bins += 1
