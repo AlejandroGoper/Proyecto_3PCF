@@ -16,12 +16,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PCF import PCF,get_histogram
 
-# Pruebas del promediado de las realizaciones
-
-ddd,e_ddd = get_histogram("DDD", "512MPc", 15)
-ddr,e_ddr = get_histogram("DDR", "512MPc", 15)
-drr,e_drr = get_histogram("DRR", "512MPc", 15)
-rrr,e_rrr = get_histogram("RRR", "512MPc", 15)
+ddd,e_ddd = get_histogram("DDD", "512MPc", 2)
+ddr,e_ddr = get_histogram("DDR", "512MPc", 2)
+drr,e_drr = get_histogram("DRR", "512MPc", 2)
+rrr,e_rrr = get_histogram("RRR", "512MPc", 2)
 
 #bins = np.arange(30)
 #3bins += 1
@@ -29,10 +27,9 @@ rrr,e_rrr = get_histogram("RRR", "512MPc", 15)
 
 # Calculando estimador
 
-#_2PCF = PCF(_DD=dd, _DR=dr, _RR=rr)
-
-#est = _2PCF.estimar()
-#error = _2PCF.error_estimador(E_DD=e_dd, E_DR=e_dr, E_RR=e_rr)
+_3PCF = PCF(_DDD=ddd, _DDR=ddr, _DRR=drr, _RRR = rrr)
+estimador_ss = _3PCF.estimar_3PCF()
+error = _3PCF.error_estimador(e_DDD=e_ddd, e_DDR=e_ddr, e_DRR=e_drr, e_RRR = e_rrr)
 
 # Graficando histograma 
 """
