@@ -79,7 +79,7 @@ def get_histogram(name,box,n_files):
         # En este caso el archivo original esta guardado en 2D con dimensiones 900 x 30 
         x_2d = genfromtxt(carpeta+archivo_prefijo+str(i)+".dat")
         # Cambiamos de nuevo a histograma 3D
-        x = x_2d.reshaped(30,30,30)
+        x = x_2d.reshape(30,30,30)
         tensor.append(x)
     # Promediamos todas las realizaciones
     x = mean(tensor,axis=0)
