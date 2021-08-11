@@ -40,9 +40,9 @@ r_cat = tc.Catalog(x=x_r, y=y_r, z=z_r, w=w_r)
 
 # Procesamos los datos
 
-dd = tc.NNCorrelation(nbins= 30, bin_type= "Linear", metric= "Euclidean", min_sep= 0, max_sep= 140)
-dr = tc.NNCorrelation(nbins= 30, bin_type= "Linear", metric= "Euclidean", min_sep= 0, max_sep= 140)
-rr = tc.NNCorrelation(nbins= 30, bin_type= "Linear", metric= "Euclidean", min_sep= 0, max_sep= 140)
+dd = tc.NNCorrelation(nbins= 30, bin_type= "Linear", metric= "Euclidean", min_sep= 0, max_sep= 140, bin_slop= 0)
+dr = tc.NNCorrelation(nbins= 30, bin_type= "Linear", metric= "Euclidean", min_sep= 0, max_sep= 140, bin_slop= 0)
+rr = tc.NNCorrelation(nbins= 30, bin_type= "Linear", metric= "Euclidean", min_sep= 0, max_sep= 140, bin_slop= 0)
 
 dd.process(d_cat)
 dr.process(d_cat,r_cat)
