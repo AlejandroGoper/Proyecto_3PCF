@@ -11,6 +11,7 @@ python y generar los histogramas de la 2PCF isotropica.
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 import treecorr as tc
 
 # Importando los archivos de data y random
@@ -53,5 +54,26 @@ rr.process(r_cat)
 ls, var_ls = dd.calculateXi(rr=rr,dr=dr)
 
 # Graficamos la funcion de correlacion de acuerdo al estimador Landy-Szaley
+
+# Definimos el eje r con el numero de bines
+
+bins = np.arange(30)
+bins += 1
+bins = (140/30)*bins
+
+# Graficando 
+
+plt.figure(figsize=(20,10))
+plt.errorbar(bins,ls*bins*bins,yerr = var_ls*(bins*bins), ecolor="black" ,elinewidth = 3, capsize = 10 ,
+             color = "lightgray",fmt = '-o',mfc="red", ms = 10, label="Box: 512 MPc")
+plt.legend(fontsize=15,loc="upper left")
+plt.grid()
+plt.title("2PCF - Dmax: 140 - Bins: 30",fontsize=22)
+plt.xlabel(r"$r$ [$MPc$]",fontsize=18)
+plt.xticks(fontsize=15)
+plt.ylabel(r"$\epsilon_{l-szalay} r^{2}$",fontsize=22)
+plt.yticks(fontsize=15)
+plt.savefig("treeCorr_2PCF_512MPc_0.png")
+plt.show()
 
 
