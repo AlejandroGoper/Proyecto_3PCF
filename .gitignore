@@ -27,4 +27,5 @@
 /Simulaciones_de_cajas/data
 /Simulaciones_de_cajas/random
 
-
+# Ignorando codigo externo
+final.ipynb
