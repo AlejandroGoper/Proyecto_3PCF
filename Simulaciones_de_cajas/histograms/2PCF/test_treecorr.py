@@ -48,4 +48,10 @@ dd.process(d_cat)
 dr.process(d_cat,r_cat)
 rr.process(r_cat)
 
-h_dd = dd.npairs
+# Calculamos el estimador landy-szaley 
+
+ls, var_ls = dd.calculateXi(rr=rr,dr=dr)
+
+# Graficamos la funcion de correlacion de acuerdo al estimador Landy-Szaley
+
+
