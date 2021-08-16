@@ -34,6 +34,12 @@ y_r = random[:,1]
 z_r = random[:,2]
 w_r = random[:,3]
 
+"""
+==============================================================================
+        Probando la funcion de correlacion de dos puntos
+==============================================================================
+"""
+
 # Catalogamos estos puntos con una clase de treecorr
 
 d_cat = tc.Catalog(x=x_d, y=y_d, z=z_d ,w=w_d)
@@ -75,5 +81,4 @@ plt.ylabel(r"$\epsilon_{l-szalay} r^{2}$",fontsize=22)
 plt.yticks(fontsize=15)
 plt.savefig("treeCorr_2PCF_512MPc_0.png")
 plt.show()
-
 
