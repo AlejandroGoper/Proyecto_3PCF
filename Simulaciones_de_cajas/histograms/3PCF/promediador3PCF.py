@@ -16,22 +16,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PCF import PCF,get_histogram
 
-ddd,e_ddd = get_histogram("DDD", "512MPc", 2)
-ddr,e_ddr = get_histogram("DDR", "512MPc", 2)
-drr,e_drr = get_histogram("DRR", "512MPc", 2)
-rrr,e_rrr = get_histogram("RRR", "512MPc", 2)
+# Importando archivos
 
-#bins = np.arange(30)
-#3bins += 1
-#bins = (140/30)*bins
+ddd,e_ddd = get_histogram("DDD", "512MPc", 15)
+ddr,e_ddr = get_histogram("DDR", "512MPc", 15)
+drr,e_drr = get_histogram("DRR", "512MPc", 15)
+rrr,e_rrr = get_histogram("RRR", "512MPc", 15)
+
+# Definiendo eje de referencia de la distancia r
+
+bins = np.arange(30)
+bins += 1
+bins = (140/30)*bins
 
 # Calculando estimador
 
 _3PCF = PCF(_DDD=ddd, _DDR=ddr, _DRR=drr, _RRR = rrr)
 estimador_ss = _3PCF.estimar_3PCF()
-error = _3PCF.error_estimador(e_DDD=e_ddd, e_DDR=e_ddr, e_DRR=e_drr, e_RRR = e_rrr)
+error = _3PCF.error_estimador_ss(e_DDD=e_ddd, e_DDR=e_ddr, e_DRR=e_drr, e_RRR = e_rrr)
 
 # Graficando histograma 
+
+
 """
 plt.figure(figsize=(20,10))
 plt.errorbar(bins,est*bins*bins,yerr = error*(bins*bins), ecolor="black" ,elinewidth = 3, capsize = 10 ,
