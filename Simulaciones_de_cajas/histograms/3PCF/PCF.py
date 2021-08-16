@@ -10,7 +10,7 @@ Clase para propagacion de errores de la 3PCF isotropica
 Szapudi & Szalay - Estimator
 """
 
-from numpy import ones,sqrt,genfromtxt,mean,std
+from numpy import ones,sqrt,genfromtxt,mean,std,divide,zeros_like
 
 class PCF:
     # Metodo constructor
@@ -28,7 +28,8 @@ class PCF:
         #Creamos un arreglo de unos de las mismas dimensiones que los histogramas
         one = ones((30,30,30))
         #Construimos el estimador
-        est = self.DDD/self.RRR -3*self.DDR/self.RRR +3*self.DRR/self.RRR - one
+        
+        est = divide(self.DDD,self.RRR, out=zeros_like(self.DDD), where=self.RRR!=0)-3*divide(self.DDR,self.RRR,out=zeros_like(self.DDR), where=self.RRR!=0) + 3*divide(self.DRR,self.RRR, out=zeros_like(self.DRR), where=self.RRR!=0) - one
         return est
     
     """
@@ -47,7 +48,8 @@ class PCF:
     """
     
     def partial_x(self):
-        return ones((30,30,30))/self.RRR        # 1/t
+        # este tipo de division es para poner 0 en lugares donde hay divisiones entre 0, por ejemplo, 0/0 o 1/0 ... 
+        return divide(ones((30,30,30)),self.RRR,out=zeros_like(self.RRR),where=self.RRR!=0)         # 1/t
     
     def partial_y(self):
         return -3*self.partial_x()              # -3/t 
