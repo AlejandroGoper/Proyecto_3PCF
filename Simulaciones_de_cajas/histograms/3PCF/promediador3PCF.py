@@ -16,7 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.cm import RdBu
 from PCF import PCF,get_histogram
-
+from matplotlib.colors import Normalize
 
 # Importando archivos
 
@@ -44,11 +44,32 @@ error = _3PCF.error_estimador_ss(e_DDD=e_ddd, e_DDR=e_ddr, e_DRR=e_drr, e_RRR = 
 
 # Graficando histograma 
 
+
+class MidpointNormalize(Normalize):
+    def __init__(self, vmin=None, vmax=None, midpoint=None, clip=False):
+        self.midpoint = midpoint
+        Normalize.__init__(self, vmin, vmax, clip)
+
+    def __call__(self, value, clip=None):
+        # I'm ignoring masked values and all kinds of edge cases to make a
+        # simple example...
+        x, y = [self.vmin, self.midpoint, self.vmax], [0, 0.5, 1]
+        return np.ma.masked_array(np.interp(value, x, y))
+
+norm = MidpointNormalize(midpoint=0)
+
+
+
 # Fijando r3 = 23 MPc -- index = 4
 fixed_value_r3 = estimador_ss[:,:,10] 
 
 R1, R2 = np.meshgrid(r_,r_)
 
 fig, ax = plt.subplots()
-p = ax.pcolor(R1,R2,fixed_value_r3,cmap=RdBu,vmin=fixed_value_r3.min(), vmax=fixed_value_r3.max())
-cb = fig.colorbar(p,ax=ax)
+plt.imshow(fixed_value_r3, origin="lower",cmap=RdBu, interpolation="bilinear",norm=norm, vmin=-1,vmax=1)
+plt.colorbar()
+plt.show()
+#p = ax.pcolormesh(R1,R2,fixed_value_r3,cmap=RdBu,vmin=-1,vmax=1)
+#cb = fig.colorbar(p,ax=ax)
+
+
