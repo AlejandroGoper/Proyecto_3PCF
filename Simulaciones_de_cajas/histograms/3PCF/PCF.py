@@ -26,10 +26,10 @@ class PCF:
     """
     def estimar_3PCF(self):
         #Creamos un arreglo de unos de las mismas dimensiones que los histogramas
-        one = ones((30,30,30))
+        #one = ones((30,30,30))
         #Construimos el estimador
         
-        est = divide(self.DDD,self.RRR, out=zeros_like(self.DDD), where=self.RRR!=0)-3*divide(self.DDR,self.RRR,out=zeros_like(self.DDR), where=self.RRR!=0) + 3*divide(self.DRR,self.RRR, out=zeros_like(self.DRR), where=self.RRR!=0) - one
+        est = divide(self.DDD,self.RRR, out=zeros_like(self.DDD), where=self.RRR!=0)-3*divide(self.DDR,self.RRR,out=zeros_like(self.DDR), where=self.RRR!=0) + 3*divide(self.DRR,self.RRR, out=zeros_like(self.DRR), where=self.RRR!=0) - divide(self.RRR,self.RRR, out=zeros_like(self.RRR), where=self.RRR!=0)
         return est
     
     """
