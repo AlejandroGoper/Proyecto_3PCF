@@ -14,9 +14,9 @@ error
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.cm import RdBu
 from PCF import PCF,get_histogram
 
-from sklearn.decomposition import PCA
 
 # Importando archivos
 
@@ -27,9 +27,14 @@ rrr,e_rrr = get_histogram("RRR", "512MPc", 15)
 
 # Definiendo eje de referencia de la distancia r
 
-bins = np.arange(30)
-bins += 1
-bins = (140/30)*bins
+bin_index = np.arange(30)
+r = (1+bin_index)*(140/30)
+
+r_ = np.linspace(0, 140,30)
+
+r1 = r
+r2 = r
+r3 = r
 
 # Calculando estimador
 
@@ -39,48 +44,11 @@ error = _3PCF.error_estimador_ss(e_DDD=e_ddd, e_DDR=e_ddr, e_DRR=e_drr, e_RRR = 
 
 # Graficando histograma 
 
-pca = PCA(n_components=3)
-est_trans = pca.fit_transform(estimador_ss.reshape((30,30*30)))
+# Fijando r3 = 23 MPc -- index = 4
+fixed_value_r3 = estimador_ss[:,:,10] 
 
+R1, R2 = np.meshgrid(r_,r_)
 
-x_t = est_trans[:,0]
-y_t = est_trans[:,1]
-z_t = est_trans[:,2]
-
-X,Y,Z,B = np.meshgrid(x_t,y_t,z_t,bins)
-
-fig = plt.figure()
-ax = fig.add_subplot(111,projection="3d")
-img = ax.scatter(X,Y,Z,c = B,cmap=plt.hot())
-fig.colorbar(img)
-plt.show()
-
-#contours = plt.contour(X,Y,Z, 3, colors='black')
-#plt.clabel(contours, inline=True,fontsize=8)
-#plt.imshow(Z)
-#plt.colorbar()
-#plt.show()
-
-
-
-
-
-
-
-
-
-
-"""
-plt.figure(figsize=(20,10))
-plt.errorbar(bins,est*bins*bins,yerr = error*(bins*bins), ecolor="black" ,elinewidth = 3, capsize = 10 ,
-             color = "lightgray",fmt = '-o',mfc="red", ms = 10, label="Box: 512 MPc")
-plt.legend(fontsize=15,loc="upper left")
-plt.grid()
-plt.title("2PCF - Dmax: 140 - Bins: 30",fontsize=22)
-plt.xlabel("$r$ [$MPc$]",fontsize=18)
-plt.xticks(fontsize=15)
-plt.ylabel("$\epsilon_{s-szalay} r^{2}$",fontsize=22)
-plt.yticks(fontsize=15)
-plt.savefig("2PCF_512MPc.png")
-plt.show()
-"""
+fig, ax = plt.subplots()
+p = ax.pcolor(R1,R2,fixed_value_r3,cmap=RdBu,vmin=fixed_value_r3.min(), vmax=fixed_value_r3.max())
+cb = fig.colorbar(p,ax=ax)
