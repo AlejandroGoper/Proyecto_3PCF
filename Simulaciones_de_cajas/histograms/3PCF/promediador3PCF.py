@@ -16,6 +16,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PCF import PCF,get_histogram
 
+from sklearn.decomposition import PCA
+
 # Importando archivos
 
 ddd,e_ddd = get_histogram("DDD", "512MPc", 15)
@@ -36,6 +38,36 @@ estimador_ss = _3PCF.estimar_3PCF()
 error = _3PCF.error_estimador_ss(e_DDD=e_ddd, e_DDR=e_ddr, e_DRR=e_drr, e_RRR = e_rrr)
 
 # Graficando histograma 
+
+pca = PCA(n_components=3)
+est_trans = pca.fit_transform(estimador_ss.reshape((30,30*30)))
+
+
+x_t = est_trans[:,0]
+y_t = est_trans[:,1]
+z_t = est_trans[:,2]
+
+X,Y,Z,B = np.meshgrid(x_t,y_t,z_t,bins)
+
+fig = plt.figure()
+ax = fig.add_subplot(111,projection="3d")
+img = ax.scatter(X,Y,Z,c = B,cmap=plt.hot())
+fig.colorbar(img)
+plt.show()
+
+#contours = plt.contour(X,Y,Z, 3, colors='black')
+#plt.clabel(contours, inline=True,fontsize=8)
+#plt.imshow(Z)
+#plt.colorbar()
+#plt.show()
+
+
+
+
+
+
+
+
 
 
 """
