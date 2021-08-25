@@ -42,9 +42,20 @@ _3PCF = PCF(_DDD=ddd, _DDR=ddr, _DRR=drr, _RRR = rrr)
 estimador_ss = _3PCF.estimar_3PCF()
 error = _3PCF.error_estimador_ss(e_DDD=e_ddd, e_DDR=e_ddr, e_DRR=e_drr, e_RRR = e_rrr)
 
+
+"""
+
+Graficando cortes de la 3PCF:
+    
+    - La 3PCF se grafica en 4 dimensiones r (el eje de la dmax) y las 3 dim del resultado de xi o el estimador
+    - Xi(r1,r2,r3) si nbins= 30 tendra dimension Xi(30,30,30)
+    - Fijamos r3 a algun valor, es decir, digamos 10 XI(r1,r2,10) y resultara una matriz de dimensiones 30x30
+    - Graficamos esta matriz con imshow de python si solo no quiero mapear los ejes, y con pcolormesh si quiero mapear los ejes.
+    
+
+"""
+
 # Graficando histograma 
-
-
 class MidpointNormalize(Normalize):
     def __init__(self, vmin=None, vmax=None, midpoint=None, clip=False):
         self.midpoint = midpoint
@@ -61,15 +72,45 @@ norm = MidpointNormalize(midpoint=0)
 
 
 # Fijando r3 = 23 MPc -- index = 4
-fixed_value_r3 = estimador_ss[:,:,10] 
+fixed_value_r3 = estimador_ss[:,:,4] 
 
 R1, R2 = np.meshgrid(r_,r_)
 
-fig, ax = plt.subplots()
-plt.imshow(fixed_value_r3, origin="lower",cmap=RdBu, interpolation="bilinear",norm=norm, vmin=-1,vmax=1)
-plt.colorbar()
-plt.show()
-#p = ax.pcolormesh(R1,R2,fixed_value_r3,cmap=RdBu,vmin=-1,vmax=1)
+#fig, ax = plt.subplots()
+
+# Opcion graica 1
+#plt.imshow(fixed_value_r3, origin="lower",cmap=RdBu, interpolation="bilinear",norm=norm, vmin=-1,vmax=1)
+#plt.colorbar()
+#plt.show()
+
+# Opcion grafica 2
+#p = plt.pcolormesh(R1,R2,fixed_value_r3,cmap=RdBu, vmin=-1,vmax=1) 
 #cb = fig.colorbar(p,ax=ax)
+
+# Opcion grafica 3
+
+"""
+Vamos a aplanar todo el array de la 3PCF para poderlo graficar en 2D
+
+"""
+aplanado_3PCF = estimador_ss.flatten()
+
+# Graficando 
+
+plt.figure(figsize=(20,10))
+#plt.errorbar(bins,ls*bins*bins,yerr = var_ls*(bins*bins), ecolor="black" ,elinewidth = 3, capsize = 10 ,
+#             color = "lightgray",fmt = '-o',mfc="red", ms = 10, label="Box: 512 MPc")
+plt.plot(aplanado_3PCF, label="3PCF-Flattened")
+plt.legend(fontsize=15,loc="upper right")
+plt.grid()
+plt.ylim([-5,60])
+#plt.title("2PCF - Dmax: 140 - Bins: 30",fontsize=22)
+plt.xlabel(r"Bin",fontsize=18)
+plt.xticks(fontsize=15)
+plt.ylabel(r"$\epsilon$",fontsize=22)
+plt.yticks(fontsize=15)
+plt.savefig("treeCorr_3PCF_512MPc_0.png")
+plt.show()
+
 
 
