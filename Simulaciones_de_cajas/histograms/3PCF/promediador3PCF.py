@@ -95,15 +95,17 @@ Vamos a aplanar todo el array de la 3PCF para poderlo graficar en 2D
 """
 aplanado_3PCF = estimador_ss.flatten()
 
+
+
 # Graficando 
 
 plt.figure(figsize=(20,10))
 #plt.errorbar(bins,ls*bins*bins,yerr = var_ls*(bins*bins), ecolor="black" ,elinewidth = 3, capsize = 10 ,
 #             color = "lightgray",fmt = '-o',mfc="red", ms = 10, label="Box: 512 MPc")
-plt.plot(aplanado_3PCF, label="3PCF-Flattened")
+plt.plot(np.log(np.abs(aplanado_3PCF)), label="3PCF-Flattened")
 plt.legend(fontsize=15,loc="upper right")
 plt.grid()
-plt.ylim([-5,60])
+plt.ylim([-10,10])
 #plt.title("2PCF - Dmax: 140 - Bins: 30",fontsize=22)
 plt.xlabel(r"Bin",fontsize=18)
 plt.xticks(fontsize=15)
