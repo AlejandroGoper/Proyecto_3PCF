@@ -15,7 +15,8 @@ python y generar los histogramas de la 3PCF isotropica.
 import numpy as np
 import matplotlib.pyplot as plt
 import treecorr as tc
-
+from matplotlib.colors import Normalize
+from matplotlib.cm import RdBu
 # Importando los archivos de data y random
 
 path = "../../"
@@ -44,15 +45,16 @@ w_r = random[:,3]
 
 # Catalogamos estos puntos con una clase de treecorr
 
-d_cat = tc.Catalog(x=x_d, y=y_d, z=z_d ,w=w_d)
-r_cat = tc.Catalog(x=x_r, y=y_r, z=z_r, w=w_r)
+d_cat = tc.Catalog(x=x_d[:1000], y=y_d[:1000], z=z_d[:1000] ,w=w_d[:1000])
+r_cat = tc.Catalog(x=x_r[:1000], y=y_r[:1000], z=z_r[:1000], w=w_r[:1000])
+
 
 # Procesamos los datos
 
-ddd = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep= 140, bin_slop= 0)
-rdd = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep= 140, bin_slop= 0)
-drr = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep= 140, bin_slop= 0)
-rrr = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep= 140, bin_slop= 0)
+ddd = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=15)
+rdd = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=15)
+drr = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=15)
+rrr = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=15)
 
 ddd.process(d_cat)
 rrr.process(r_cat)
@@ -65,23 +67,32 @@ zeta, var_zeta = ddd.calculateZeta(rrr=rrr,drr=drr,rdd=rdd)
 
 # Graficamos la funcion de correlacion de acuerdo al estimador Landy-Szaley
 
-# Definimos el eje r con el numero de bines
 
-bins = np.arange(30)
-bins += 1
-bins = (140/30)*bins
 
-# Graficando 
+# Graficando histograma 
+class MidpointNormalize(Normalize):
+    def __init__(self, vmin=None, vmax=None, midpoint=None, clip=False):
+        self.midpoint = midpoint
+        Normalize.__init__(self, vmin, vmax, clip)
 
-#plt.figure(figsize=(20,10))
-#plt.errorbar(bins,ls*bins*bins,yerr = var_ls*(bins*bins), ecolor="black" ,elinewidth = 3, capsize = 10 ,
-#             color = "lightgray",fmt = '-o',mfc="red", ms = 10, label="Box: 512 MPc")
-#plt.legend(fontsize=15,loc="upper left")
-#plt.grid()
-#plt.title("2PCF - Dmax: 140 - Bins: 30",fontsize=22)
-#plt.xlabel(r"$r$ [$MPc$]",fontsize=18)
-#plt.xticks(fontsize=15)
-#plt.ylabel(r"$\epsilon_{l-szalay} r^{2}$",fontsize=22)
-#plt.yticks(fontsize=15)
-#plt.savefig("treeCorr_2PCF_512MPc_0.png")
-#plt.show()
+    def __call__(self, value, clip=None):
+        # I'm ignoring masked values and all kinds of edge cases to make a
+        # simple example...
+        x, y = [self.vmin, self.midpoint, self.vmax], [0, 0.5, 1]
+        return np.ma.masked_array(np.interp(value, x, y))
+
+norm = MidpointNormalize(midpoint=0)
+
+
+
+# Fijando r3 = 23 MPc -- index = 4
+fixed_value_r3 = zeta[:,:,4] 
+
+#R1, R2 = np.meshgrid(r_,r_)
+
+fig, ax = plt.subplots()
+
+# Opcion graica 1
+plt.imshow(fixed_value_r3, origin="lower",cmap=RdBu, interpolation="bilinear",norm=norm, vmin=-1,vmax=1)
+plt.colorbar()
+plt.show()
