@@ -51,17 +51,17 @@ r_cat = tc.Catalog(x=x_r[:1000], y=y_r[:1000], z=z_r[:1000], w=w_r[:1000])
 
 # Procesamos los datos
 
-ddd = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=15)
-rdd = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=15)
-drr = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=15)
-rrr = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=15)
+ddd = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=30)
+rdd = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=30)
+drr = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=30)
+rrr = tc.NNNCorrelation(nbins= 30, bin_type= "LogRUV", metric= "Euclidean", min_sep= 1, max_sep=140, bin_slop= 0, nubins=30,nvbins=30)
 
 ddd.process(d_cat)
 rrr.process(r_cat)
 drr.process(d_cat,r_cat)
 rdd.process(r_cat,d_cat)
 
-ddd.write('results.dat',rrr,drr,rdd)
+ddd.write('output_TC_1K_30b.dat',rrr,drr,rdd)
 # Calculamos el estimador zeta 
 
 zeta, var_zeta = ddd.calculateZeta(rrr=rrr,drr=drr,rdd=rdd)
@@ -69,6 +69,7 @@ zeta, var_zeta = ddd.calculateZeta(rrr=rrr,drr=drr,rdd=rdd)
 # Graficamos la funcion de correlacion de acuerdo al estimador Landy-Szaley
 
 
+"""
 
 # Graficando histograma 
 class MidpointNormalize(Normalize):
@@ -97,3 +98,4 @@ fig, ax = plt.subplots()
 plt.imshow(fixed_value_r3, origin="lower",cmap=RdBu, interpolation="bilinear",norm=norm, vmin=-1,vmax=1)
 plt.colorbar()
 plt.show()
+"""
