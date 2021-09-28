@@ -10,6 +10,7 @@
 *.dat
 *.xls
 *.ods
+*.json
 
 # Ignorando archivos cache de spyder
 **__pycache__/
