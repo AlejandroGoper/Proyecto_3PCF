@@ -61,6 +61,7 @@ rrr.process(r_cat)
 drr.process(d_cat,r_cat)
 rdd.process(r_cat,d_cat)
 
+ddd.write('results.dat',rrr,drr,rdd)
 # Calculamos el estimador zeta 
 
 zeta, var_zeta = ddd.calculateZeta(rrr=rrr,drr=drr,rdd=rdd)
