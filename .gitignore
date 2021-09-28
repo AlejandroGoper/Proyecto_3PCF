@@ -29,3 +29,6 @@
 
 # Ignorando codigo externo
 final.ipynb
+
+# ignorando archivos no necesarios de programas bash
+*.sh
