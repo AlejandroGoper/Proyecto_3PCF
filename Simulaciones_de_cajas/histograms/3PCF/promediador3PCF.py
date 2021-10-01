@@ -142,6 +142,15 @@ c = 140/30
 c_u = 1/30
 c_v = c_u
 
+# Funcion para verificar si un triplete es un triangulo:
+
+def es_triangulo(d1,d2,d3):
+    if ((d1+d2>d3) and (d1+d3>d2) and (d2+d3>d1) ):
+        return True
+    else:
+        return False
+
+
 for i in range(29):
     for j in range(i):
         for k in range(j):
@@ -150,18 +159,22 @@ for i in range(29):
             rrr_value = rrr[i][j][k]
             drr_value = drr[i][j][k]
             rdd_value = ddr[i][j][k]
-            print(f"i={i}, j={j}, k={k}")
-            # Calculamos las nuevas variables
-            r = c*(i+1)
-            u = (k+1)/(j+1)
-            v = (i-j)/(k+1)
-            print(f"r={r}, u={u}, v={v}")
-            # Calculamos ahora el indice que le corresponde en el array de nuevas variables
-            i_r = int(r/c)
-            i_u = int(u/c_u)
-            i_v = int(v/c_v)
-            print(f"i_r = {i_r}, i_u= {i_u}, i_v= {i_v}")
-            
+            #print(f"i={i}, j={j}, k={k}")
+            if(es_triangulo(c*i, c*j, c*k)):
+                # Calculamos las nuevas variables
+                r = c*(i+1)
+                u = (k+1)/(j+1)
+                v = (i-j)/(k+1)
+                #print(f"r={r}, u={u}, v={v}")
+                # Calculamos ahora el indice que le corresponde en el array de nuevas variables
+                i_r = int(r/c)
+                i_u = int(u/c_u)
+                i_v = int(v/c_v)
+                #print(f"i_r = {i_r}, i_u= {i_u}, i_v= {i_v}")
+                ddd_mapeo[i_r][i_u][i_v] += ddd_value
+                rrr_mapeo[i_r][i_u][i_v] += rrr_value
+                drr_mapeo[i_r][i_u][i_v] += drr_value
+                rdd_mapeo[i_r][i_u][i_v] += rdd_value
 
 
 
