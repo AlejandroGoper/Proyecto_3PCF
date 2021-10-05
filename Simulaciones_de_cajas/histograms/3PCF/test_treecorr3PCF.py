@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 import treecorr as tc
 from matplotlib.colors import Normalize
 from matplotlib.cm import RdBu
+from modulo_preparacion_tc import eliminar_v_negativos
 # Importando los archivos de data y random
 
 path = "../../"
@@ -69,7 +70,7 @@ zeta, var_zeta = ddd.calculateZeta(rrr=rrr,drr=drr,rdd=rdd)
 # Graficamos la funcion de correlacion de acuerdo al estimador Landy-Szaley
 
 
-"""
+
 
 # Graficando histograma 
 class MidpointNormalize(Normalize):
@@ -85,10 +86,10 @@ class MidpointNormalize(Normalize):
 
 norm = MidpointNormalize(midpoint=0)
 
-
+xi = eliminar_v_negativos("output_TC_1K_30b.dat", nbins=30)
 
 # Fijando r3 = 23 MPc -- index = 4
-fixed_value_r3 = zeta[:,:,4] 
+fixed_value_r3 = xi[:,:,4] 
 
 #R1, R2 = np.meshgrid(r_,r_)
 
@@ -98,4 +99,3 @@ fig, ax = plt.subplots()
 plt.imshow(fixed_value_r3, origin="lower",cmap=RdBu, interpolation="bilinear",norm=norm, vmin=-1,vmax=1)
 plt.colorbar()
 plt.show()
-"""
