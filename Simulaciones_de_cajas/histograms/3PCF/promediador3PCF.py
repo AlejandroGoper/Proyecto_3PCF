@@ -141,7 +141,7 @@ c = 140/30
 # Esto es porque para las variables u,v el valor maximo es 1, y nbins = 30
 c_u = 1/30
 c_v = c_u
-
+c_r = np.log(140)/30
 # Funcion para verificar si un triplete es un triangulo:
 
 def es_triangulo(d1,d2,d3):
@@ -162,12 +162,12 @@ for i in range(29):
             #print(f"i={i}, j={j}, k={k}")
             if(es_triangulo(c*i, c*j, c*k)):
                 # Calculamos las nuevas variables
-                r = c*(i+1)
+                r = np.log(c*(i+1))
                 u = (k+1)/(j+1)
                 v = (i-j)/(k+1)
                 #print(f"r={r}, u={u}, v={v}")
                 # Calculamos ahora el indice que le corresponde en el array de nuevas variables
-                i_r = int(r/c)
+                i_r = int(r/c_r)
                 i_u = int(u/c_u)
                 i_v = int(v/c_v)
                 #print(f"i_r = {i_r}, i_u= {i_u}, i_v= {i_v}")
@@ -178,3 +178,37 @@ for i in range(29):
 
 
 
+# Graficando histograma 
+class MidpointNormalize(Normalize):
+    def __init__(self, vmin=None, vmax=None, midpoint=None, clip=False):
+        self.midpoint = midpoint
+        Normalize.__init__(self, vmin, vmax, clip)
+
+    def __call__(self, value, clip=None):
+        # I'm ignoring masked values and all kinds of edge cases to make a
+        # simple example...
+        x, y = [self.vmin, self.midpoint, self.vmax], [0, 0.5, 1]
+        return np.ma.masked_array(np.interp(value, x, y))
+
+norm = MidpointNormalize(midpoint=0)
+
+
+
+# Calculando estimador
+
+_3PCF = PCF(_DDD=ddd_mapeo, _DDR=rdd_mapeo, _DRR=drr_mapeo, _RRR = rrr_mapeo)
+estimador_ss = _3PCF.estimar_3PCF()
+#error = _3PCF.error_estimador_ss(e_DDD=e_ddd, e_DDR=e_ddr, e_DRR=e_drr, e_RRR = e_rrr)
+
+
+# Fijando r3 = 23 MPc -- index = 4
+fixed_value_r3 = estimador_ss[:,:,4] 
+
+#R1, R2 = np.meshgrid(r_,r_)
+
+fig, ax = plt.subplots()
+
+# Opcion graica 1
+plt.imshow(fixed_value_r3, origin="lower",cmap=RdBu, interpolation="bilinear",norm=norm, vmin=-1,vmax=1)
+plt.colorbar()
+plt.show()
