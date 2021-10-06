@@ -39,21 +39,23 @@ def eliminar_v_negativos(archivo,nbins):
     #u_nom = data[:,1]
     #v_nom = data[:,2]
     
-    zeta = data[:,11]
+    #zeta = data[:,11]
     
-    #ddd = data[:,12]
-    #rrr = data[:,13]
-    #drr = data[:,14]
-    #rdd = data[:,15]
+    ddd = data[:,12]
+    rrr = data[:,13]
+    drr = data[:,14]
+    rdd = data[:,15]
     
     """
     Ahora, convertimos el arreglo flatten de Z que entrega la salida de treecorr 
     a un array tridimensional de dimensiones (nbins,nbins,2*nbins)
     """
     
-    xi_tc_full = zeta.reshape((nbins,nbins,2*nbins))
-    
-    
+    #xi_tc_full = zeta.reshape((nbins,nbins,2*nbins))
+    ddd_tc = ddd.reshape((nbins,nbins,2*nbins))
+    rrr_tc = rrr.reshape((nbins,nbins,2*nbins))
+    drr_tc = drr.reshape((nbins,nbins,2*nbins))
+    rdd_tc = rdd.reshape((nbins,nbins,2*nbins))
     """
     Debemos ahora eliminar los bins negativos de v, 
     sabemos que v es simetrico en los bines positivos y negativos, y que por la forma
@@ -61,11 +63,16 @@ def eliminar_v_negativos(archivo,nbins):
     positivos, asi que, debemos eliminar los primeros 30 bins
     """
     
-    xi_tc = zeros((nbins,nbins,nbins))
-    
+    ddd_ = zeros((nbins,nbins,nbins))
+    rrr_ = zeros((nbins,nbins,nbins))
+    drr_ = zeros((nbins,nbins,nbins))
+    rdd_ = zeros((nbins,nbins,nbins))
     for i in range(nbins):
         for j in range(nbins):
             for k in range(nbins):
-                xi_tc[i][j][k] = xi_tc_full[i][j][nbins+k]
+                ddd_[i][j][k] = ddd_tc[i][j][nbins+k]
+                rrr_[i][j][k] = rrr_tc[i][j][nbins+k]
+                drr_[i][j][k] = drr_tc[i][j][nbins+k]
+                rdd_[i][j][k] = rdd_tc[i][j][nbins+k]
     
-    return xi_tc
+    return ddd_,rrr_,drr_,rdd_
