@@ -11,6 +11,8 @@
 *.xls
 *.ods
 *.json
+*.bak
+*.ini
 
 # Ignorando archivos cache de spyder
 **__pycache__/
