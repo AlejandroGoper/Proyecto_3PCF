@@ -17,16 +17,17 @@ import matplotlib.pyplot as plt
 from matplotlib.cm import RdBu
 from PCF import PCF,get_histogram
 from matplotlib.colors import Normalize
+from scipy.interpolate import interp2d
 
 # Importando archivos
 
-ddd,e_ddd = get_histogram("DDD", "512MPc", 15)
-ddr,e_ddr = get_histogram("DDR", "512MPc", 15)
-drr,e_drr = get_histogram("DRR", "512MPc", 15)
-rrr,e_rrr = get_histogram("RRR", "512MPc", 15)
+ddd,e_ddd = get_histogram("DDD", "2GPc", 5)
+ddr,e_ddr = get_histogram("DDR", "2GPc", 5)
+drr,e_drr = get_histogram("DRR", "2GPc", 5)
+rrr,e_rrr = get_histogram("RRR", "2GPc", 5)
 
 
-"""
+
 # Definiendo eje de referencia de la distancia r
 
 bin_index = np.arange(30)
@@ -43,10 +44,8 @@ r3 = r
 _3PCF = PCF(_DDD=ddd, _DDR=ddr, _DRR=drr, _RRR = rrr)
 estimador_ss = _3PCF.estimar_3PCF()
 error = _3PCF.error_estimador_ss(e_DDD=e_ddd, e_DDR=e_ddr, e_DRR=e_drr, e_RRR = e_rrr)
-"""
 
 """
-
 Graficando cortes de la 3PCF:
     
     - La 3PCF se grafica en 4 dimensiones r (el eje de la dmax) y las 3 dim del resultado de xi o el estimador
@@ -54,7 +53,7 @@ Graficando cortes de la 3PCF:
     - Fijamos r3 a algun valor, es decir, digamos 10 XI(r1,r2,10) y resultara una matriz de dimensiones 30x30
     - Graficamos esta matriz con imshow de python si solo no quiero mapear los ejes, y con pcolormesh si quiero mapear los ejes.
     
-
+"""
 
 
 # Graficando histograma 
@@ -74,26 +73,33 @@ norm = MidpointNormalize(midpoint=0)
 
 
 # Fijando r3 = 23 MPc -- index = 4
-fixed_value_r3 = estimador_ss[:,:,4] 
+fixed_value_r3 = estimador_ss[:,:,0] 
 
 R1, R2 = np.meshgrid(r_,r_)
 
-#fig, ax = plt.subplots()
+fig, ax = plt.subplots()
 
 # Opcion graica 1
-#plt.imshow(fixed_value_r3, origin="lower",cmap=RdBu, interpolation="bilinear",norm=norm, vmin=-1,vmax=1)
-#plt.colorbar()
-#plt.show()
+img = ax.imshow(fixed_value_r3, extent=[0,140,0,140],
+           origin="lower", 
+           cmap=RdBu, interpolation="bilinear",norm=norm, vmin=-1,vmax=1)
+ax.set_xlabel(r"$r_{1}$ [MPc]")
+ax.set_ylabel(r"$r_{2}$ [MPc]" )
+cbar = fig.colorbar(img)
+cbar.set_label(r"$\epsilon_[r_{1},r_{2},0]$")
+plt.savefig("3PCF_2_0.png")
+plt.show()
 
 # Opcion grafica 2
+
 #p = plt.pcolormesh(R1,R2,fixed_value_r3,cmap=RdBu, vmin=-1,vmax=1) 
 #cb = fig.colorbar(p,ax=ax)
-
+#plt.savefig("3PC_512_png")
+#plt.show()
 # Opcion grafica 3
 
-
+"""
 #Vamos a aplanar todo el array de la 3PCF para poderlo graficar en 2D
-
 
 aplanado_3PCF = estimador_ss.flatten()
 
@@ -115,8 +121,8 @@ plt.ylabel(r"$\epsilon$",fontsize=22)
 plt.yticks(fontsize=15)
 plt.savefig("treeCorr_3PCF_512MPc_0.png")
 plt.show()
-
 """
+
 
 """
 Mapeo a las variables de TreeCorr
@@ -126,7 +132,7 @@ u = d3 / d2
 v = (d1 - d2)/d3
 
 Vamos a mapear los histogramas directamente.
-"""
+
 
 # Construimos unas histogramas vacios para las nuevas variables, r,u,v
 
@@ -212,3 +218,4 @@ fig, ax = plt.subplots()
 plt.imshow(fixed_value_r3, origin="lower",cmap=RdBu, interpolation="bilinear",norm=norm, vmin=-1,vmax=1)
 plt.colorbar()
 plt.show()
+"""
